@@ -52,9 +52,10 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_loader_service__ = __webpack_require__("../../../../../src/app/services/loader.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_user_authentication_service_service__ = __webpack_require__("../../../../../src/app/services/user/authentication-service.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_loader_service__ = __webpack_require__("../../../../../src/app/services/loader.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -67,14 +68,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AppComponent = (function () {
-    function AppComponent(loaderService, router) {
+    function AppComponent(loaderService, router, authenticationService) {
         this.loaderService = loaderService;
         this.router = router;
+        this.authenticationService = authenticationService;
         this.title = 'app';
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.router.navigate(['/home']);
+        if (!this.authenticationService.isHaveToken()) {
+            this.router.navigate(['/page/login']);
+        }
+        else {
+            this.router.navigate(['/home']);
+        }
         // this.loaderService.status.subscribe((val: boolean) => {
         //   this.showLoader = val;
         // });
@@ -82,15 +90,15 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 AppComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+    Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"])({
         selector: 'app-root',
         template: "<router-outlet><span *ngIf=\"showLoader\" class=\"loading\"></span></router-outlet>",
         styles: [__webpack_require__("../../../../../src/app/app.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_loader_service__["a" /* LoaderService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_loader_service__["a" /* LoaderService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__services_user_authentication_service_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__services_user_authentication_service_service__["a" /* AuthenticationService */]) === "function" && _c || Object])
 ], AppComponent);
 
-var _a, _b;
+var _a, _b, _c;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -1702,7 +1710,7 @@ var _a, _b;
 /***/ "../../../../../src/app/components/template/footer/footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<footer class=\"app-footer\">\n  <span class=\"margin-left\"><a href=\"#\">POS</a> &copy; 2017 Powered by Team 20180410</span>\n</footer>"
+module.exports = "<footer class=\"app-footer\">\n  <span class=\"margin-left\"><a href=\"#\">POS</a> &copy; 2017 Powered by Team 20180420</span>\n</footer>"
 
 /***/ }),
 
@@ -1763,7 +1771,7 @@ FooterComponent = __decorate([
 /***/ "../../../../../src/app/components/template/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>&#9776;</button>\n  <a class=\"navbar-brand\" routerLinkActive=\"active\" [routerLink]=\"['/home']\"></a>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appSidebarToggler>&#9776;</button>\n  <ul class=\"nav navbar-nav ml-auto\">\n\n    <button class=\"navbar-toggler d-md-down-none\" (click)=\"logout()\" type=\"button\" appAsideMenuToggler>\n      <i class=\"icon-logout icons font-2xl d-block\"> Logout</i>\n    </button>\n  </ul>\n</header>"
+module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>&#9776;</button>\n  <a class=\"navbar-brand\" id=\"linkHome\" routerLinkActive=\"active\" [routerLink]=\"['/home']\"></a>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appSidebarToggler>&#9776;</button>\n  <ul class=\"nav navbar-nav ml-auto\">\n\n    <button class=\"navbar-toggler d-md-down-none\" id=\"btnLogout\" (click)=\"logout()\" type=\"button\" appAsideMenuToggler>\n      <i class=\"icon-logout icons font-2xl d-block\"> Logout</i>\n    </button>\n  </ul>\n</header>"
 
 /***/ }),
 
@@ -2842,6 +2850,13 @@ var Constants = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Constants, "GET_MEMBER_BY_CODE_URL", {
+        get: function () {
+            return this.DOMAIN_URL + '/api/getMemberBy/code';
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Constants, "GET_ALL_DAILY_URL", {
         get: function () {
             return this.DOMAIN_URL + '/api/clearing';
@@ -3234,6 +3249,9 @@ var MemberService = (function () {
     };
     MemberService.prototype.getMember = function (data) {
         return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_1__constant__["a" /* Constants */].GET_MEMBER_BY_FULL_NAME_OR_MOBILE_URL + '/' + data);
+    };
+    MemberService.prototype.getMemberByCode = function (code) {
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_1__constant__["a" /* Constants */].GET_MEMBER_BY_CODE_URL + '/' + code);
     };
     return MemberService;
 }());
@@ -3658,9 +3676,10 @@ StringUtils.keys = {
 // The file contents for the current environment will overwrite these during build.
 var environment = {
     production: false,
-    env: 'dev',
-    api_url: 'http://localhost:8801',
+    // api_url: 'http://localhost:8801',
+    api_url: 'http://188.166.212.73:8801',
     report_url: 'http://localhost:9999',
+    env: 'dev'
 };
 //# sourceMappingURL=environment.js.map
 
